@@ -1,4 +1,4 @@
-# FP projekt
+# Projekt pri predmetu Finančni Praktikum
 
 ## Graffiti conjecture 232
 
