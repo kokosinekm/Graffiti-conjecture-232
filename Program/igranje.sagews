@@ -1,4 +1,4 @@
-︠859baf40-0123-42fe-9e21-8b586da59a5as︠
+︠9ef35763-ad43-4ded-b7e9-dac8cbe38c08s︠
 # Projektna naloga pri predmetu Financni praktikum
 
 # Naloga 19: Graffiti conjecture 232
@@ -11,33 +11,36 @@
 
 # VELIKE GRAFE GENERIRAMO Z:
 # graphs.RandomGNP(n, p) generira nakljucni enostavni graf kjer je n stevilo vozlisc in p verjetnost povezave med dvema vozliscema
-G = graphs.RandomGNP(8, 0.4)
+G = graphs.RandomGNP(20, 0.4)
 G.show()
+# Povezan?
+G.is_connected()
 
 G.dominating_set(total=True, value_only=True)
 # total=True da bo total dominating set
 # value_only=True -> ker nas zanima samo vrednost in ne seznam vozlisc
-G.is_connected()
-G.radius()
 
+G.radius()
 #B = set(G.periphery())
 
 #G.eccentricity()
 
 # Funkcija za testiranje predpostavke
-# LAHKO SE ZGODI, DA JE MAKS PRAZNA MNOŽICA!!!
-# TRENUTNO PROGRAM VZAME maks = 0, CE JE maks PRAZNA MNOZICA
+# LAHKO SE ZGODI, DA JE max(arg) PRAZNA MNOŽICA!!! Takrat je trenutno nastavljeno, da za maks vzamem vrednost 0.
 # ce graf slucajno ni povezan to program pove
 def predpostavka(G):
     if G.is_connected == False:
         return('Graf ni povezan!')
     B = set(G.periphery())
     d = G.distance_all_pairs()
-    maks = max(d[u][v] for u in B for v in G if v not in B)
-    if maks == set():
+    if set(d[u][v] for u in B for v in G if v not in B) == set():
         maks = 0
-    if 2 * G.dominating_set(total=True, value_only=True) >= G.radius() + maks:
-        return('Res!')
+    else:
+        maks = max(d[u][v] for u in B for v in G if v not in B)
+    if 2 * G.dominating_set(total=True, value_only=True)  - G.radius() - maks >= 0:
+        print('Res!')
+        print('Razlika med levo in desno stranjo predpostavke je:')
+        print(2 * G.dominating_set(total=True, value_only=True)  - G.radius() - maks)
     else:
         return('Ni res!')
 
@@ -53,7 +56,7 @@ print(seznam)
 for graf in seznam:
     if predpostavka(graf) == 'Ni res!':
         graf.show()
-︡57d42c9f-043a-4061-87f5-70f4798a8f1d︡{"file":{"filename":"/home/user/.sage/temp/project-b91a1257-2a31-43fb-ace4-6f296cd8d1ba/348/tmp_YtKB5Q.svg","show":true,"text":null,"uuid":"be290546-bd25-4d50-af96-f05ee1b57b6f"},"once":false}︡{"stdout":"3\n"}︡{"stdout":"True\n"}︡{"stdout":"2\n"}︡{"stdout":"Testiramo predpostavko:\n"}︡{"stderr":"\n\n*** WARNING: Code contains non-ascii characters    ***\n\n\nError in lines 19-19\nTraceback (most recent call last):\n  File \"/cocalc/lib/python2.7/site-packages/smc_sagews/sage_server.py\", line 1191, in execute\n    flags=compile_flags), namespace, locals)\n  File \"\", line 1, in <module>\n  File \"\", line 6, in predpostavka\nValueError: max() arg is an empty sequence\n"}︡{"done":true}
+︡aa712168-398e-4102-9bcd-6263cfb611a1︡{"file":{"filename":"/home/user/.sage/temp/project-b91a1257-2a31-43fb-ace4-6f296cd8d1ba/1203/tmp_AUtF7t.svg","show":true,"text":null,"uuid":"809da652-f96e-4211-a9b5-b3e6cc7c48b0"},"once":false}︡{"stdout":"True\n"}︡{"stdout":"4\n"}︡{"stdout":"2\n"}︡{"stdout":"Testiramo predpostavko:\n"}︡{"stdout":"Res!\nRazlika med levo in desno stranjo predpostavke je:\n4\n"}︡{"stdout":"[Graph on 4 vertices, Graph on 4 vertices, Graph on 4 vertices, Graph on 4 vertices, Graph on 4 vertices, Graph on 4 vertices]\n"}︡{"stdout":"Res!\nRazlika med levo in desno stranjo predpostavke je:\n2\nRes!\nRazlika med levo in desno stranjo predpostavke je:\n0\nRes!\nRazlika med levo in desno stranjo predpostavke je:\n2\nRes!\nRazlika med levo in desno stranjo predpostavke je:\n2\nRes!\nRazlika med levo in desno stranjo predpostavke je:\n2\nRes!\nRazlika med levo in desno stranjo predpostavke je:\n3\n"}︡{"done":true}
 
 
 
