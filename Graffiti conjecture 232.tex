@@ -433,7 +433,11 @@ Zapisati učinkovit algoritem, ki bo za vsak generiran graf preverila lastnosti 
 
 \section{Potek dela}
 
-Razlaga programa...
+Za preverjanje dane domneve sva napisala program, ki jo testira. Samo domnevo pa sva nekoliko obrnila na način, da lahko učinkovito gledava tudi njeno razliko. To sva storila z namenom da opazujeva kateri grafi so bližje temu, da bi bili lahko protiprimer domneve. Kot je vidno v spodnjem programu sva tako na grafih preverjala $2\gamma_{t}(G) - rad(G) - ecc(B) \geq 0$. Na ta način sva s pomočjo razlike $2\gamma_{t}(G) - rad(G) - ecc(B)$ ocenjevala kako blizu pride nek graf k temu, da bi bil protiprimer.
+
+Funkcija z imenom $predpostavka()$ sprejme dan graf $G$ in na njem testira domnevo ter vrne razliko $2\gamma_{t}(G) - rad(G) - ecc(B)$, če predpostavka velja, sicer pa pove, da predpostavka ne velja. 
+
+V spodnji kodi je naveden še primer in potek izračuna vrednosti domneve ter tudi način generiranja velikih in malih grafov.
 
 %%%%%KODA%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
@@ -577,7 +581,7 @@ Razlika med levo in desno stranjo predpostavke je:
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{n}{protiprimeri} \PY{o}{=} \PY{p}{[}\PY{p}{]}
 \PY{k}{for} \PY{n}{graf} \PY{o+ow}{in} \PY{n}{seznam}\PY{p}{:}
-    \PY{k}{if} \PY{n}{predpostavka}\PY{p}{(}\PY{n}{graf}\PY{p}{)} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ni res!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+    \PY{k}{if} \PY{n}{predpostavka}\PY{p}{(}\PY{n}{graf}\PY{p}{)} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Predpostavka NE velja!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
         \PY{n}{graf}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
         \PY{n}{protiprimeri}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{graf}\PY{p}{)}
 \end{Verbatim}
@@ -611,7 +615,7 @@ Razlika med levo in desno stranjo predpostavke je:
 
 Majhne grafe sva v $sagu$ generirala s pomočjo funkcije $graphs.nauty\_geng('v\ -c')$. Kjer je $v$ število vozlišč grafa, $-c$ pa pomeni, da so grafi povezani. Na dovolj majhnih grafih sva generirala vse možne enostavne in povezane grafe ter na njih testirala predpostavko. Prav vsi grafi so ji ustrezali, zato sva se odločila podrobneje pogledati grafe, kjer je bila razlika med levo in desno stranjo predpostavke najmanjša.
 
-Graf na dveh vozliščih. Razlika v predpostavki je $0$.
+Graf na dveh vozliščih. Razlika v predpostavki je  $2\gamma_{t}(G) - rad(G) - ecc(B) = 0$.
 
 \begin{center}
 \includegraphics[width=5cm]{min_graf_2}
@@ -672,26 +676,220 @@ Grafi na osmih vozliščih imajo razliko leve in desne strani ponovno enako $0$.
 
 Za grafe na devetih vozliščih se konča naše preizkušanje majhnih grafov, ker na tej točki računalnik ni več sposoben generirati vseh preprostih povezanih grafov na devetih vozliščih preko generatorja  $graphs.nauty\_geng('v\ -c')$. Portal $CoCalc$ sam terminira generator, če je ta zagnan.
 
+Zaključimo lahko, da dana predpostavka $Graffiti\ conjecture\ 232$ vsekakor velja na majhnih grafih z osem ali manj vozlišči.
+
 Iz vseh preverjenih majhnih grafov na do osem vozlišč pa lahko opazimo več stvari. Kot prvič, je bila minimalna razlika v predpostavki ne glede na število vozlišč enaka $0$. Tudi z izjemo grafa na dveh vozliščih, je bila razlika predpostavke enaka $0$, ko je imelo vsako vozlišče najmanj $2$ povezavi. Opazimo pa lahko še, da je bil med grafi, kjer je bila razlika predpostavke enaka $0$ vedno graf, kjer so bila vsa vozlišča povezana med seboj.
 
-Glede na zadnjo opazko si poglejmo še kakšen graf kjer so vsa vozlišča povezana med sabo in poglejmo ali je razlika v predpostavki ponovno $0$. Te grafe ustvarimo kar s pomočjo ugrajenega generatorja $graphs.RandomGNP(n, \ p)$, ki generira naključni preprost graf, kjer je $n$ število vozlišč in $p$ verjetnost povezave med dvema vozliščema. Torej bo za preverjanje naše opazke verjetnost $p = 1$, da bodo vsa vozlišča povezana med sabo.
+Glede na zadnjo opazko si poglejmo še kakšen graf kjer so vsa vozlišča povezana med sabo in poglejmo ali je razlika v predpostavki ponovno $0$. Te grafe ustvarimo kar s pomočjo ugrajenega generatorja $graphs.RandomGNP(n, \ p)$, ki generira naključni preprost graf, kjer je $n$ število vozlišč in $p$ verjetnost povezave med dvema vozliščema. Torej bo za preverjanje naše opazke verjetnost $p = 1$, da bodo vsa vozlišča povezana med sabo. Idejo preizkusimo na grafih z $9$, $12$, $49$, $76$, $100$ in $500$ vozlišči. Spodaj je testiranje navedeno kar s kodo.
 
-%%% KODA
+%%% KODA%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{1}{\boxspacing}
+\prompt{In}{incolor}{2}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} VELIKE GRAFE GENERIRAMO Z:}
+\PY{c+c1}{\PYZsh{} graphs.RandomGNP(n, p) generira nakljucni preprost graf kjer je n stevilo vozlisc in p verjetnost povezave med dvema vozliscema}
 \PY{n}{G} \PY{o}{=} \PY{n}{graphs}\PY{o}{.}\PY{n}{RandomGNP}\PY{p}{(}\PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{2}{\boxspacing}
+\prompt{In}{incolor}{3}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{n}{G}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
-%%%
 
-Gasdfasd
+%out 9
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
 
+\end{Verbatim}
+\end{tcolorbox}
+\includegraphics{Opazka pri majhnih grafih_2_0}
+%
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Preizkusimo funkcijo na zgornjem grafu:}
+\PY{n}{predpostavka}\PY{p}{(}\PY{n}{G}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Razlika med levo in desno stranjo predpostavke je:
+0
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'Predpostavka velja!'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G} \PY{o}{=} \PY{n}{graphs}\PY{o}{.}\PY{n}{RandomGNP}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+%out 12
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+\includegraphics{Opazka pri majhnih grafih_5_0}
+%
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Preizkusimo funkcijo na zgornjem grafu:}
+\PY{n}{predpostavka}\PY{p}{(}\PY{n}{G}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Razlika med levo in desno stranjo predpostavke je:
+0
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'Predpostavka velja!'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G} \PY{o}{=} \PY{n}{graphs}\PY{o}{.}\PY{n}{RandomGNP}\PY{p}{(}\PY{l+m+mi}{49}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{G}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+%out 49
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+\includegraphics{Opazka pri majhnih grafih_7_0}
+%
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Preizkusimo funkcijo na zgornjem grafu:}
+\PY{n}{predpostavka}\PY{p}{(}\PY{n}{G}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Razlika med levo in desno stranjo predpostavke je:
+0
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'Predpostavka velja!'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G} \PY{o}{=} \PY{n}{graphs}\PY{o}{.}\PY{n}{RandomGNP}\PY{p}{(}\PY{l+m+mi}{76}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{G}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+%out 76
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+\includegraphics{Opazka pri majhnih grafih_9_0}
+%
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Preizkusimo funkcijo na zgornjem grafu:}
+\PY{n}{predpostavka}\PY{p}{(}\PY{n}{G}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Razlika med levo in desno stranjo predpostavke je:
+0
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'Predpostavka velja!'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G} \PY{o}{=} \PY{n}{graphs}\PY{o}{.}\PY{n}{RandomGNP}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{predpostavka}\PY{p}{(}\PY{n}{G}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Razlika med levo in desno stranjo predpostavke je:
+0
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'Predpostavka velja!'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G} \PY{o}{=} \PY{n}{graphs}\PY{o}{.}\PY{n}{RandomGNP}\PY{p}{(}\PY{l+m+mi}{500}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{predpostavka}\PY{p}{(}\PY{n}{G}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Razlika med levo in desno stranjo predpostavke je:
+0
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'Predpostavka velja!'
+\end{Verbatim}
+\end{tcolorbox}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Kot so pokazali primeri na grafih z $2$, $3$, $4$, $5$, $6$, $7$, $8$, $9$, $12$, $49$, $76$, $100$ ali $500$ vozlišči lahko vidimo, da ima razlika predpostavke na grafih, kjer so vsa vozlišča povezana med sabo vrednost $0$.
 \end{document}
