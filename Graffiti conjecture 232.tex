@@ -75,40 +75,53 @@ Razlaga programa...
 
 Majhne grafe sva v $sagu$ generirala s pomočjo funkcije $graphs.nauty\_geng('v\ -c')$. Kjer je $v$ število vozlišč grafa, $-c$ pa pomeni, da so grafi povezani. Na dovolj majhnih grafih sva generirala vse možne enostavne in povezane grafe ter na njih testirala predpostavko. Prav vsi grafi so ji ustrezali, zato sva se odločila podrobneje pogledati grafe, kjer je bila razlika med levo in desno stranjo predpostavke najmanjša.
 
-Graf na dveh vozliščih. Razlika v predpostavki je $3$.
+Graf na dveh vozliščih. Razlika v predpostavki je $0$.
 
-\includegraphics[width=5cm]{min_graf_2_vozlisci}
+\includegraphics[width=5cm]{min_graf_2}
 
-Graf na treh vozliščih. Razlika je $2$.
+Graf na treh vozliščih. Razlika je $0$.
 
-\includegraphics[width=5cm]{min_graf_3_vozlisca}
+\includegraphics[width=5cm]{min_graf_3}
 
-Graf na štirih vozliščih. Razlika je $0$.
+Grafi na štirih vozliščih imajo ponovno razliko predpostavke enako $0$. Izmed $6$ generiranih grafov imamo $2$ z razliko predpostavke $0$.
 
-\includegraphics[width=5cm]{min_graf_4_vozlisca}
+\includegraphics[width=5cm]{min_graf_4.1}
+\includegraphics[width=5cm]{min_graf_4.2}
 
-Pri grafih generiranih na petih vozliščih dobiš več grafov katerih razlika predpostavke je $0$. Zanimivo je, da če bi nadaljeval vzorec po minimumih na grafih dveh, treh ali štirih vozliščih  in sedaj eno za drugim povezal pet vozlišč sedaj ne dobiš minimuma ampak je razlika enaka $1$. 
+Pri grafih generiranih na petih vozliščih dobiš več grafov katerih razlika predpostavke je $0$. Generiranih je skupno $21$ grafov na pet vozliščih, od katerih jih $5$ ime razliko predpostavke $0$. Program testira vse te grafe v manj kot $0.07$ sekunde.
 
-\includegraphics[width=5cm]{min_graf_5.1_vozlisca}
-\includegraphics[width=5cm]{min_graf_5.2_vozlisca}
-\includegraphics[width=5cm]{min_graf_5.3_vozlisca}
-\includegraphics[width=5cm]{min_graf_5.4_vozlisca}
-\includegraphics[width=5cm]{min_graf_5.5_vozlisca}
+\includegraphics[width=5cm]{min_graf_5.1}
+\includegraphics[width=5cm]{min_graf_5.2}
+\includegraphics[width=5cm]{min_graf_5.3}
+\includegraphics[width=5cm]{min_graf_5.4}
+\includegraphics[width=5cm]{min_graf_5.5}
 
-Pri grafih na šest vozliščih je ponovno več rešitev in razlika je $0$, takih grafov je $38$ od vseh $112$ generiranih na šestih vozliščih. Poglejmo jih nekaj.
+Pri grafih na šest vozliščih je razlika ponovno $0$. Od skupno $112$ vseh možnih grafov na šest vozliščih ima razliko $0$ natanko $28$ grafov. Program testira vse šestvozliščne grafe v približno $0.3$ sekunde. Spodaj je prikazanih par primerov.
 
-\includegraphics[width=5cm]{min_graf_6.1_vozlisca}
-\includegraphics[width=5cm]{min_graf_6.2_vozlisca}
-\includegraphics[width=5cm]{min_graf_6.3_vozlisca}
-\includegraphics[width=5cm]{min_graf_6.4_vozlisca}
-\includegraphics[width=5cm]{min_graf_6.5_vozlisca}
+\includegraphics[width=5cm]{min_graf_6.1}
+\includegraphics[width=5cm]{min_graf_6.2}
+\includegraphics[width=5cm]{min_graf_6.3}
+\includegraphics[width=5cm]{min_graf_6.4}
+\includegraphics[width=5cm]{min_graf_6.5}
 
-Grafi na sedmih vozliščih imajo ponovno minimalno razliko $0$. 0d $853$ generiranih grafov je takih $315$.
+Za grafe na sedem vozliščih je minimalna razlika predpostavke ponovno $0$. Sedaj je možno generirati $853$ različnih grafov, razliko $0$ pa jih ima $223$. Program testira to predpostavko na vseh generiranih grafih na sedmih vozliščih v približno $2.5$ sekunde. Ponovno si poglejmo nekaj primerov teh grafov.
 
-\includegraphics[width=5cm]{min_graf_7.1_vozlisca}
-\includegraphics[width=5cm]{min_graf_7.2_vozlisca}
-\includegraphics[width=5cm]{min_graf_7.3_vozlisca}
-\includegraphics[width=5cm]{min_graf_7.4_vozlisca}
-\includegraphics[width=5cm]{min_graf_7.5_vozlisca}
+\includegraphics[width=5cm]{min_graf_7.1}
+\includegraphics[width=5cm]{min_graf_7.2}
+\includegraphics[width=5cm]{min_graf_7.3}
+\includegraphics[width=5cm]{min_graf_7.4}
+\includegraphics[width=5cm]{min_graf_7.5}
+
+Grafi na osmih vozliščih imajo razliko leve in desne strani ponovno enako $0$. Zdaj generiramo že $11117$ različnih grafov in za njihovo testiranje porabimo že kar približno $55$ sekund. Grafov z osmimi vozlišči, kjer je razlika predpostavke enaka $0$ je $3374$.
+
+\includegraphics[width=5cm]{min_graf_8.1}
+\includegraphics[width=5cm]{min_graf_8.2}
+\includegraphics[width=5cm]{min_graf_8.3}
+\includegraphics[width=5cm]{min_graf_8.4}
+\includegraphics[width=5cm]{min_graf_8.5}
+
+Za grafe na devetih vozliščih se konča naše preizkušanje majhnih grafov, ker na tej točki računalnik ni več sposoben generirati vseh preprostih povezanih grafov na devetih vozliščih preko generatorja  $graphs.nauty\_geng('v\ -c')$. Portal $CoCalc$ sam terminira generator, če je ta zagnan.
+
+Iz vseh preverjenih majhnih grafov na do osem vozlišč pa lahko opazimo več stvari. Kot prvič, je bila minimalna razlika v predpostavki ne glede na število vozlišč enaka $0$. Tudi z izjemo grafa na dveh vozliščih, je bila razlika predpostavke enaka $0$, ko je imelo vsako vozlišče najmanj $2$ povezavi. Opazimo pa lahko še, da je bil med grafi, kjer je bila razlika predpostavke enaka $0$ vedno graf, kjer so bila vsa vozlišča povezana med seboj.
 
 \end{document}
