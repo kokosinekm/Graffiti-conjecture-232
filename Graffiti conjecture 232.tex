@@ -193,7 +193,26 @@ Za velike grafe ($n\leq50$) sva uporabila vgrajeno funkcijo $graphs.RandomGNP(n,
 \includegraphics[width=16cm]{veliki_grafi}
 \end{center}
 
-Program sva pognala večkrat, v končnem sva preverila več kot 30000 grafov (ne nujno različnih). Nikoli se ni zgodilo, da bi obstajal protiprimer, še več razlika je bila vedno večja od 0.
+Program sva pognala večkrat, v končnem sva preverila več kot 30000 grafov (ne nujno različnih). Nikoli se ni zgodilo, da bi obstajal protiprimer, še več razlika je bila vedno večja od 0. Pri grafih $n=50$ in $p=0.66$ se je pojavil primer, ko je bila razlika 2. To je najmanjša razlika, kar se jih je pojavilo pri generiranju.
+
+\begin{center}
+\includegraphics[height=8.5cm]{graf_razlika_2}
+\end{center} 
+
+Na koncu sva preverila še 3500 grafov z $n=200$ in $p=0.66$, kar je trajalo približno 5 ur. Razlika je bila 4, ta razlika je bila tudi najbolj pogosta pri vseh generiranjih.
+
+\begin{center}
+\includegraphics[height=8.5cm]{graf_200}
+\end{center}
+
+\subsection{Simulated-annealing}
+Po direktni analizi sva začela z metodo Simulated-annealing. Ideja je, da generiramo naključen graf z $n$ vozlišči, preverimo domnevo, nakar izberemo naključni vozlišči in dodamo povezavo, če ne obstaja oziroma odstranimo povezavo, če obstaja. Potem še enkrat preverimo domnevo na spremenjenem grafu, če je rezultat enak ali boljši (neenakost bližje 0) potem nadaljujemo na novem grafu, sicer odstranimo spremembo in ponovno izberemo naključni vozlišči. To nardimo za $k$ korakov nakar vrnemo graf in rezultat neenakosti domneve. V primeru, da bi našli protiprimer, program takoj konča in izpiše rezultat.
+
+\begin{center}
+\includegraphics[width=8cm]{Simulacija}
+\end{center}
+
+Preverjala sva grafe velikosti 10 (rezultat 2), 20 (rezultat 2) in 50 (rezultat 2), kjer sva uporabljala število korakov $k=2000$. Izkazalo se je, da večje število korakov ni vračalo manjših rezultatov. Potem sva izvajala program še za 100 in 200 vozlišč. Že od prej vemo, da testiranje domneve na 200 vozliščih za 3500 grafov traja približno 5 ur. Zato sva število korakov zmanjšala na $k=700$ in s tem čas na 1 uro. Za 100 vozlišč pa 500 korakov traja približno 20 minut, torej 1500 traja približno 1 uro, zato $k=1500$. 
 
 
 \end{document}
