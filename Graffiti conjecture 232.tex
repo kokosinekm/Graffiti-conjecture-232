@@ -1,21 +1,6 @@
 \documentclass[10pt, a4paper]{article}
 
 %==============================================================
-%Dodatek zaradi miktex error pri include graphics
-%https://tex.stackexchange.com/questions/511138/miktex-graphics-version-1-3b-bug-on-windows-10-setcurrfile-undefined
-%==============================================================
-\makeatletter
-\def\set@curr@file#1{%
-  \begingroup
-    \escapechar\m@ne
-    \xdef\@curr@file{\expandafter\string\csname #1\endcsname}%
-  \endgroup
-}
-\def\quote@name#1{"\quote@@name#1\@gobble""}
-\def\quote@@name#1"{#1\quote@@name}
-\def\unquote@name#1{\quote@@name#1\@gobble"}
-\makeatother
-%==============================================================
 %Paketi
 %==============================================================
 \usepackage[slovene]{babel}
@@ -213,13 +198,8 @@ Na koncu sva preverila še 3500 grafov z $n=200$ in $p=0.66$, kar je trajalo pri
 \includegraphics[height=8.5cm]{graf_200}
 \end{center}
 
-\subsection{Simulated-annealing}
-Po direktni analizi sva začela z metodo Simulated-annealing. Ideja je, da generiramo naključen graf z $n$ vozlišči, preverimo domnevo, nakar izberemo naključni vozlišči in dodamo povezavo, če ne obstaja oziroma odstranimo povezavo, če obstaja. Potem še enkrat preverimo domnevo na spremenjenem grafu, če je rezultat enak ali boljši (neenakost bližje 0) potem nadaljujemo na novem grafu, sicer odstranimo spremembo in ponovno izberemo naključni vozlišči. To nardimo za $k$ korakov nakar vrnemo graf in rezultat neenakosti domneve. V primeru, da bi našli protiprimer, program takoj konča in izpiše rezultat.
-
-\begin{center}
-\textbf{Simulated-anealing}
-\includegraphics[width=8cm]{Simulacija}
-\end{center}
+\subsection{Lokalno iskanje}
+Po direktni analizi sva začela z local extrema search. Ideja je, da generiramo naključen graf z $n$ vozlišči, preverimo domnevo, nakar izberemo naključni vozlišči in dodamo povezavo, če ne obstaja oziroma odstranimo povezavo, če obstaja. Potem še enkrat preverimo domnevo na spremenjenem grafu, če je rezultat enak ali boljši (neenakost bližje 0) potem nadaljujemo na novem grafu, sicer odstranimo spremembo in ponovno izberemo naključni vozlišči. To nardimo za $k$ korakov nakar vrnemo graf in rezultat neenakosti domneve. V primeru, da bi našli protiprimer, program takoj konča in izpiše rezultat. S tem iščemo le lokalni ekstrem, ta je, če slučajno začnemo na pravem mestu, lahko tudi globalni.
 
 Preverjala sva grafe velikosti 10 (rezultat 2), 20 (rezultat 2) in 50 (rezultat 2), kjer sva uporabljala število korakov $k=2000$. Izkazalo se je, da večje število korakov ni vračalo manjših rezultatov. Potem sva izvajala program še za 100 in 200 vozlišč. Že od prej vemo, da testiranje domneve na 200 vozliščih za 3500 grafov traja približno 5 ur. Zato sva število korakov zmanjšala na $k=700$ in s tem čas na 1 uro. Za 100 vozlišč pa 500 korakov traja približno 20 minut, torej 1500 traja približno 1 uro, zato $k=1500$. Verjetnost povezave med vozliščema pri generiranju grafa je bila $p=0.8$, saj sva pri direktni analizi dobivala boljše rezultate, kot pri manjših verjetnostih. Rezultati so bili boljši kot pri direktni analizi, saj sva tudi za $n=100,200$ našla primere, kjer je bila razlika enaka 2. Spodaj so navedeni primeri grafov kjer so bile razlike majhne, pri $n=10$ je 0, pri 15, 20, 100 pa je 2.
 
@@ -232,9 +212,30 @@ Preverjala sva grafe velikosti 10 (rezultat 2), 20 (rezultat 2) in 50 (rezultat 
 \includegraphics[width=6cm]{graf_20_2}
 \end{center}
 
-
 \begin{center}
 \includegraphics[width=6cm]{graf_100_2}
+\end{center}
+
+\subsection{Simulated Annealing}
+Na koncu sva naredila še Simulated Annealing (SA) analizo. Ideja SA je predvsem, da je ocena globalnega ekstrema lahko boljša od točnega lokalnega. Točnega globalnega ekstrema zaradi časovne zahtevnosti ni moč izračunati.
+
+\pagebreak
+
+\subsubsection{Delovanje SA}
+Vsako povezavo, ki razliko pri domnevi zmanjša dodamo/odstranimo z neko verjetnostjo. Torej vzamemo dve naključni vozlišči in kot prej dodamo/odstranimo povezavo, nakar preverimo domnevo in v primeru, da je razlika enaka ali manjša, z neko verjetnostjo nadaljujemo na tem novem grafu, sicer na starem. S tem se izognemo konvergenci v lokalen ekstrem. Še vedno izbiramo le boljše oziroma enake grafe, zato algoritem ne divergira. Algoritem, se torej od iskanja lokalnega ekstrema razlikuje v tem, da se, z dodatkom verjetnosti pri dodajanju/odstranjevanju povezav, izognemo konvergenci v lokalen ekstrem, ampak gremo proti globalnemu. 
+
+Sedaj sva tudi za grafe velikosti do $n=50$ dobila rezultat 0 (prej le za $n=10$), a nikoli protiprimera. Za grafe do $n=25$ sva v najmanj 2000 korakih našla graf z rezultatom 0. Zanimivo je, da nama pri $n=50$ in $p=0.75$ ni uspelo najti rezultata manjšega od 2, pri $p=0.4$ pa je bil rezultat tudi 0, število korakov pa sva povečala na $k=150000$, kar je trajalo približno 1h.
+
+\includegraphics[scale=0.6]{Simulacija} 
+
+\begin{center}
+\includegraphics[width=6cm]{graf_15_0}
+\includegraphics[width=6cm]{graf_20_0}
+\end{center}
+
+\begin{center}
+\includegraphics[width=6cm]{graf_25_0}
+\includegraphics[width=6cm]{graf_50_0}
 \end{center}
 
 \end{document}
