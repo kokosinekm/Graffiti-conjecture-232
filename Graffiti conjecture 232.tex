@@ -167,9 +167,27 @@ Grafi na osmih vozliščih imajo razliko leve in desne strani ponovno enako $0$.
 \includegraphics[height=5cm]{min_graf_8_5}
 \end{center}
 
-Z grafi na osmih vozliščih se konča naše preizkušanje majhnih grafov. Na tej točki računalnik ni več sposoben generirati vseh preprostih povezanih grafov na devetih vozliščih preko generatorja  $graphs.nauty\_geng('v\ -c')$. Portal $CoCalc$ sam terminira generator, če je ta zagnan.
+Za grafe na devetih vozliščih traja preverjanje že nekaj minut. Izmed vseh $261080$ generiranih grafov jih ima razliko $0$ natanko $46482$.
 
-Zaključimo lahko, da dana domneva $Graffiti\ conjecture\ 232$ vsekakor velja na majhnih grafih z osem ali manj vozlišči.
+\begin{center}
+\includegraphics[height=5cm]{min_graf_9_1}
+\includegraphics[height=5cm]{min_graf_9_2}
+\includegraphics[height=5cm]{min_graf_9_3}
+\includegraphics[height=5cm]{min_graf_9_4}
+\includegraphics[height=5cm]{min_graf_9_5}
+\end{center}
+
+Grafe na desetih vozliščih program preverja nekoliko več kot $4$ ure. Generiranih je $11716571$ grafov in minimalna razlika je ponovno $0$, takih grafov je $2284660$.
+
+\begin{center}
+\includegraphics[height=5cm]{min_graf_10_1}
+\includegraphics[height=5cm]{min_graf_10_2}
+\includegraphics[height=5cm]{min_graf_10_3}
+\includegraphics[height=5cm]{min_graf_10_4}
+\includegraphics[height=5cm]{min_graf_10_5}
+\end{center}
+
+Zaključimo lahko, da dana domneva $Graffiti\ conjecture\ 232$ vsekakor velja na majhnih grafih z deset ali manj vozlišči.
 
 \section{Veliki grafi}
 Za velike grafe ($n\leq50$) sva uporabila vgrajeno funkcijo $graphs.RandomGNP(n,p)$. Ta funkcija generira graf z n vozlišči in ustvari povezavo med dvema vozliščema z verjetnostjo p. Funkcijo preverjanje domneve sva nekoliko modificirala in nato ustvarila generator grafov za vozlišča za $n=50,75,100$ in verjetnosti $p=0.33,0.5,0.66$. Vsako kombinacijo sva preverila 1000-krat. Tak program porabi približno 1 uro in 10 minut za izračun. Čas je bil izmerjen s pomočjo knjižnice $datetime$. Program je shranjeval najmanjšo razliko, ki jo je našel. Če je bila ta manjša ali enaka 2 je graf shranil v seznam $mala\_razlika$.
